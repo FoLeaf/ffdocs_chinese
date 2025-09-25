@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="cache-control" content="no-cache">
+<link rel="stylesheet" href="css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - 已知问题与补丁</title>
+</head>
+<body>
+<h2>已知问题</h2>
+<p>FatFs R0.16 已于 2025年7月22日 发布。以下是关于 FatFs R0.16 已验证的问题及其解决方法或补丁。</p>
+<hr>
+<pre>
+2. 2025年9月13日
+--------------------------------------------------------------------------------------------------
+根据<a href="bd/indexc975.html?show=3866">用户论坛</a>中的建议，我已将最小卷大小从 128
+个扇区更改为 64 个扇区。<a href="patch/ff16p1.html">这是</a>针对未打补丁的 ff.c 的 patch-1。
+当使用 f_mkfs 函数在非常小的驱动器上创建卷时，建议
+指定 FM_SFD 标志并为 n_root 设置一个适当的值。
+</pre>
+
+<pre>
+1. 2025年8月3日
+--------------------------------------------------------------------------------------------------
+在 LFN 配置下链接的 Unicode 转换模块 ffunicode.c，在为 DBCS 配置时会占用
+大量内存。
+根据<a href="bd/indexf702.html?show=3863">用户论坛</a>中的建议，我发现 8 个转换表中有 6 个的
+压缩率有很大的改进空间。这是通过修改压缩算法得到的
+表大小结果。
+
+日语 (932)               59k  ==>   47k (-12k)
+简体中文 (936)    174k  ==>   97k (-77k)
+韩语 (949)                136k  ==>  103k (-33k)
+繁体中文 (950)   108k  ==>   78k (-30k)
+所有代码页 (0)                  482k  ==>  329k (-153k)
+
+<a href="patch/ffunicode.html">这是</a>用于替换的新代码。
+请注意，对于 SBCS 配置没有任何改进。
+
+</pre>
+
+<p class="foot"><a href="index.html">返回</a> | <a href="https://beian.miit.gov.cn/" target="_blank">赣ICP备2025058913号-1</a></p>
+</body>
+</html>

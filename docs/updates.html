@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="cache-control" content="no-cache">
+<link rel="stylesheet" href="css_e.css" type="text/css" media="screen" title="ELM Default">
+<title>FatFs - 更新及迁移说明</title>
+</head>
+<body style="max-width: none;">
+<h2>更新及迁移说明</h2>
+<table class="lst4">
+
+<tr><th>版本</th><th>更新内容</th><th>迁移说明</th></tr>
+
+<tr>
+<td>R0.16<br>2025年7月22日</td>
+<td>
+<ul class="plain">
+<li>移除了一个长期存在的限制，即 `f_getcwd` 和路径名中的双点 `".."` 在 exFAT 卷上不起作用。</li>
+<li>修复了 `f_readdir` 无法检测到目录末尾，导致应用程序陷入无限循环的问题。(出现于 R0.15b)</li>
+<li>修复了在未启用 LFN 时，以分隔符结尾或包含重复分隔符的点名称被拒绝的问题。</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>当启用相对路径时，exFAT 卷上的子目录最大深度被限制为配置的级别 `FF_PATH_DEPTH`。</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>R0.15b<br>2025年6月21日</td>
+<td>
+<ul class="plain">
+<li>增加了对创建时间时间戳的支持。(<tt>FF_FS_CRTIME</tt>)</li>
+<li>修复了 FatFs 加载 FAT32 卷中的 FsInfo 失败，导致 `f_getfree` 总是强制进行完整的 FAT 扫描，从而耗费很长时间的问题。(出现于 R0.15a)</li>
+</ul></td>
+<td>
+<ul class="plain">
+<li>对 `f_utime` 函数进行了少量更改，以支持创建时间的时间戳。</li>
+</ul></td>
+</tr>
+
+<tr>
+<td>R0.15a<br>2024年11月22日</td>
+<td>
+<ul class="plain">
+<li>修复了当 `FF_FS_LOCK != 0` 时的编译错误。(出现于 R0.15)</li>
+<li>修复了在 `FF_FS_REENTRANT`、`FF_VOLUMES >= 2` 和 `FF_FS_LOCK > 0` 条件下并发使用 FatFs 时的潜在问题。</li>
+<li>使 `f_setlabel` 在 `FF_STR_VOLUME_ID == 2` 时接受带有 Unix 风格卷 ID 的卷标。</li>
+<li>使 FatFs 更新 exFAT VBR 中的 `PercInUse` 字段。(为保证准确性，需要在此之前调用 `f_getfree`)</li>
+</ul></td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>R0.15<br>2022年11月6日</td>
+<td>
+<ul class="plain">
+<li>更改了用户提供的同步函数，以便从 FatFs 代码中完全消除平台依赖性。</li>
+<li>修复了在 `FF_FS_REENTRANT` 条件下 `f_mount` 中的一个潜在错误。</li>
+<li>修复了当 `FF_FS_REENTRANT && FF_VOLUMES > 1` 为真时，文件锁控制 `FF_FS_LOCK` 没有互斥的问题。</li>
+<li>修复了当卷大小 `>= 2^32` 个扇区时，`f_mkfs` 创建损坏的 exFAT 卷的问题。</li>
+<li>修复了当 `FF_LFN_UNICODE == 2` (UTF-8) 时，字符串函数无法写入非 BMP（基本多文种平面）的 Unicode 字符的问题。</li>
+<li>修复了 GPT 头识别中的一个兼容性问题。</li>
+</ul></td>
+<td>
+<ul class="plain">
+<li>当 `FF_FS_REENTRANT` 时，用户需要提供的同步函数 `ff_cre_syncobj`、`ff_del_syncobj`、`ff_req_grant` 和 `ff_rel_grant` 分别被替换为 `ff_mutex_create`、`ff_mutex_delete`、`ff_mutex_take` 和 `ff_mutex_give`。示例请参见 `ffsystem.c`。</li>
+<li>从配置选项中移除了 `FF_SYNC_t`。</li>
+</ul></td>
+</tr>
+
+<tr>
+<td>R0.14b<br>2021年4月17日</td>
+<td>
+<ul class="plain">
+<li>使 FatFs 使用标准库 `string.h` 进行复制、比较和搜索，而不是内置的字符串函数。</li>
+<li>为 `f_printf` 添加了对 long long 整数和浮点数的支持。(<tt>FF_STRF_LLI</tt> 和 <tt>FF_STRF_FP</tt>)</li>
+<li>使路径名解析器忽略结尾的分隔符，以允许 `"dir/"` 这种形式。</li>
+<li>改进了 Unix 风格路径名功能的兼容性。</li>
+<li>修复了在特定条件下 `f_open` 失败时文件陷入死锁的问题。(出现于 R0.12a)</li>
+<li>修复了 `f_mkfs` 可能因时序依赖错误而创建错误 exFAT 卷的问题。(出现于 R0.12)</li>
+<li>修复了 `f_setcp` 无法设置代码页 855 的问题。(出现于 R0.13)</li>
+<li>修复了一些编译器警告。</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>从这个版本开始，FatFs 依赖于 `string.h`。</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>R0.14a<br>2020年12月5日</td>
+<td>
+<ul class="plain">
+<li>限制了 `f_findnext` 中的递归调用次数，以防止堆栈溢出。</li>
+<li>修复了使用 MS-DOS 2.x 和 3.x 格式化的旧软盘无法挂载的问题。</li>
+<li>修复了一些编译器警告。</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>`f_findfirst` 中匹配模式的通配符数量限制为 4 个。</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>R0.14<br>2019年10月14日</td>
+<td>
+<ul class="plain">
+<li>增加了对 64 位 LBA 和 GUID 分区表的支持 (<tt>FF_LBA64</tt>)</li>
+<li>更改了一些 API 函数，`f_mkfs` 和 `f_fdisk`。</li>
+<li>修复了 `f_open` 无法找到长度为 `FF_MAX_LFN` 个字符的文件名的问题。</li>
+<li>修复了 `f_readdir` 无法检索长度为 `FF_MAX_LFN - 1` 个字符的长文件名的问题。</li>
+<li>修复了 `f_readdir` 返回大小写转换错误的文件名的问题。(出现于 R0.12)</li>
+<li>修复了 `f_mkfs` 在第二个分区创建 exFAT 卷可能失败的问题。(出现于 R0.12)</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>`f_mkfs` 和 `f_fdisk` 的用法已更改，并为这些函数添加了一些新功能。</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>R0.13c<br>2018年10月14日</td>
+<td>
+<ul class="plain">
+<li>为 C99 及更高版本添加了对 `stdint.h` 的支持。(<tt>integer.h</tt> 曾被包含在 <tt>ff.h</tt> 中)</li>
+<li>修复了当最后一个目录条目不为空时，读取目录会进入无限循环的问题。(出现于 R0.12)</li>
+<li>修复了在 exFAT 卷的碎片化子目录中创建子目录会破坏父目录 FAT 链的问题。(出现于 R0.12)</li>
+<li>修复了当缓冲区包含有效的驱动器号时，`f_getcwd` 会导致输出缓冲区溢出的问题。(出现于 R0.13b)</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>从这个版本开始，FatFs 在 C99 或更高版本中依赖于 `stdint.h`。</li>
+<li>移除了 `integer.h`。</li>
+</ul>
+</td>
+</tr>
+
+<tr>
+<td>R0.13b<br>2018年4月7日</td>
+<td>
+<ul class="plain">
+<li>在 API 上增加了对 UTF-32 编码的支持。(<tt>FF_LFN_UNICODE = 3</tt>)</li>
+<li>增加了对 Unix 风格卷前缀的支持。(<tt>FF_STR_VOLUME_ID = 2</tt>)</li>
+<li>修复了访问 exFAT 根目录中超出簇边界的对象可能失败的问题。(出现于 R0.12c)</li>
+<li>修复了 `f_setlabel` 没有拒绝某些无效字符的问题。(出现于 R0.09b)</li>
+</ul>
+</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>R0.13a<br>2017年10月14日</td>
+<td>
+<ul class="plain">
+<li>在 API 上增加了对 UTF-8 编码的支持。(<tt>FF_LFN_UNICODE = 2</tt>)</li>
+<li>为文件名输出缓冲区添加了选项。(<tt>FF_LFN_BUF, FF_SFN_BUF</tt>)</li>
+<li>为 `f_mkfs` 和 `f_fdisk` 的工作缓冲区添加了动态内存分配选项。</li>
+<li>修复了 `f_fdisk` 和 `f_mkfs` 创建具有错误 CHS 参数的分区表的问题。(出现于 R0.09)</li>
+<li>修复了 `f_unlink` 在 exFAT 卷的碎片文件上可能导致簇丢失的问题。(出现于 R0.12c)</li>
+<li>修复了 `f_setlabel` 拒绝某些对 exFAT 卷有效的字符的问题。(出现于 R0.12)</li>
+</ul>
+</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>R0.13<br>2017年5月21日</td>
+<td>
+<ul class="plain">
+<li>配置项名称的前缀从 `"_"` 更改为 `"FF_"`。</li>
+<li>添加了 `f_setcp`，用于运行时代码页配置。(<tt>FF_CODE_PAGE = 0</tt>)</li>
+<li>改进了在扩展深层簇链时的簇分配时间。</li>
+<li>通过使用 `FF_USE_LFN = 3`，改进了 `f_mkdir` 在大簇尺寸下的处理时间。</li>
+<li>改进了 exFAT 的 `NoFatChain` 标志，在碎片文件被截断并变得连续后进行设置。</li>
+<li>修复了重命名 exFAT 卷上的文件时，存档属性未被设置的问题。(出现于 R0.12)</li>
+<li>修复了对现有文件进行写或 lseek 操作时，exFAT 的 FAT 条目可能被破坏的问题。(出现于 R0.12c)</li>
+<li>修复了当对 exFAT 目录进行新的簇分配时，创建文件可能失败的问题。(出现于 R0.12c)</li>
+</ul>
+</td>
+<td>
+<ul class="plain">
+<li>仅 ASCII 配置 `FF_CODE_PAGE = 1` 已被移除。请改用 `FF_CODE_PAGE = 437`。</li>
+</ul>
+</td>
+</tr>
+
+</table>
+<p class="foot"><a href="index.html">返回</a> | <a href="https://beian.miit.gov.cn/" target="_blank">赣ICP备2025058913号-1</a></p>
+</body>
+</html>

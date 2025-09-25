@@ -1,0 +1,86 @@
+site_name: 'FatFs - 通用FAT文件系统模块'
+site_description: 'FatFs通用FAT文件系统模块的现代化、易于搜索和阅读的中文文档。包含完整的API参考、应用笔记和配置指南。'
+site_author: 'Gemini'
+
+plugins:
+  - search:
+      separator: '[\\s,!:[\]()"\/]+|(?!\\b)(?=[A-Z][a-z])|\\.(?!\\d)|&[lg]t;'
+
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: 切换到暗色模式
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: 切换到亮色模式
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - '首页': 'index.md'
+  - '重要文档':
+    - '应用笔记': 'api/appnote.md'
+    - '配置选项': 'api/config.md'
+  - '文件访问':
+    - 'f_open': 'api/open.md'
+    - 'f_close': 'api/close.md'
+    - 'f_read': 'api/read.md'
+    - 'f_write': 'api/write.md'
+    - 'f_lseek': 'api/lseek.md'
+    - 'f_truncate': 'api/truncate.md'
+    - 'f_sync': 'api/sync.md'
+    - 'f_forward': 'api/forward.md'
+    - 'f_expand': 'api/expand.md'
+    - 'f_tell': 'api/tell.md'
+    - 'f_eof': 'api/eof.md'
+    - 'f_size': 'api/size.md'
+    - 'f_error': 'api/error.md'
+  - '字符串函数':
+    - 'f_gets': 'api/gets.md'
+    - 'f_putc': 'api/putc.md'
+    - 'f_puts': 'api/puts.md'
+    - 'f_printf': 'api/printf.md'
+  - '目录访问':
+    - 'f_opendir': 'api/opendir.md'
+    - 'f_closedir': 'api/closedir.md'
+    - 'f_findfirst': 'api/findfirst.md'
+    - 'f_findnext': 'api/findnext.md'
+  - '文件与目录管理':
+    - 'f_stat': 'api/stat.md'
+    - 'f_unlink': 'api/unlink.md'
+    - 'f_rename': 'api/rename.md'
+    - 'f_mkdir': 'api/mkdir.md'
+    - 'f_chmod': 'api/chmod.md'
+    - 'f_utime': 'api/utime.md'
+    - 'f_chdir': 'api/chdir.md'
+    - 'f_chdrive': 'api/chdrive.md'
+    - 'f_getcwd': 'api/getcwd.md'
+  - '卷管理':
+    - 'f_mount': 'api/mount.md'
+    - 'f_mkfs': 'api/mkfs.md'
+    - 'f_fdisk': 'api/fdisk.md'
+    - 'f_getfree': 'api/getfree.md'
+    - 'f_getlabel': 'api/getlabel.md'
+    - 'f_setlabel': 'api/setlabel.md'
+    - 'f_setcp': 'api/setcp.md'
+  - '底层接口':
+    - 'disk_initialize': 'api/dinit.md'
+    - 'disk_status': 'api/dstat.md'
+    - 'disk_read': 'api/dread.md'
+    - 'disk_write': 'api/dwrite.md'
+    - 'disk_ioctl': 'api/dioctl.md'
+    - 'get_fattime': 'api/fattime.md'
+
+copyright: 'Copyright &copy; ChaN | <a href="https://beian.miit.gov.cn/" target="_blank">赣ICP备2025058913号-1</a>'
+
+markdown_extensions:
+  - attr_list
