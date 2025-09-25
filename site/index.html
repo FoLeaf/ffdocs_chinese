@@ -396,6 +396,13 @@
       
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
+    媒体访问接口
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
     资源
   </a>
   
@@ -1319,6 +1326,13 @@
       
         <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
+    媒体访问接口
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
     资源
   </a>
   
@@ -1360,14 +1374,18 @@
 </li>
 </ul>
 <h3 id="api">核心API</h3>
+<p><img align="right" alt="FatFs Layers1" src="res/layers1.png" width="250" /></p>
 <p>FatFs 提供了一套标准的、类似 <code>stdio.h</code> 的文件操作接口。</p>
 <ul>
-<li><strong>文件访问</strong>: <code>f_open</code>, <code>f_close</code>, <code>f_read</code>, <code>f_write</code>, <code>f_lseek</code> 等。</li>
-<li><strong>目录访问</strong>: <code>f_opendir</code>, <code>f_readdir</code> 等。</li>
-<li><strong>文件管理</strong>: <code>f_stat</code>, <code>f_unlink</code>, <code>f_rename</code>, <code>f_mkdir</code> 等。</li>
-<li><strong>卷管理</strong>: <code>f_mount</code>, <code>f_mkfs</code>, <code>f_getfree</code> 等。</li>
+<li><strong>文件访问</strong>: <a href="api/open/"><code>f_open</code></a>, <a href="api/close/"><code>f_close</code></a>, <a href="api/read/"><code>f_read</code></a>, <a href="api/write/"><code>f_write</code></a>, <a href="api/lseek/"><code>f_lseek</code></a> 等。</li>
+<li><strong>目录访问</strong>: <a href="api/opendir/"><code>f_opendir</code></a>, <a href="api/readdir.md"><code>f_readdir</code></a> 等。</li>
+<li><strong>文件管理</strong>: <a href="api/stat/"><code>f_stat</code></a>, <a href="api/unlink/"><code>f_unlink</code></a>, <a href="api/rename/"><code>f_rename</code></a>, <a href="api/mkdir/"><code>f_mkdir</code></a> 等。</li>
+<li><strong>卷管理</strong>: <a href="api/mount/"><code>f_mount</code></a>, <a href="api/mkfs/"><code>f_mkfs</code></a>, <a href="api/getfree/"><code>f_getfree</code></a> 等。</li>
 </ul>
-<h3 id="_2">资源</h3>
+<h3 id="_2">媒体访问接口</h3>
+<p><img align="right" alt="FatFs Layers2" src="res/layers2.png" width="250" /></p>
+<p>由于 FatFs 模块是独立于平台和存储介质的<em>文件系统层</em>，它与内存卡、硬盘等物理设备完全分离。存储设备控制模块<em>并非 FatFs 模块的一部分</em>，需要由开发者自行实现。FatFs 通过如下所示的简单媒体访问接口来控制存储设备。</p>
+<h3 id="_3">资源</h3>
 <ul>
 <li><strong>入门指南: <a href="api/appnote/">FatFs 应用笔记</a></strong></li>
 <li><strong>下载:</strong> <a href="arc/ff16.zip">FatFs R0.16</a> | <a href="updates.html">更新历史</a> | <a href="patches.html">最新补丁</a></li>
@@ -1377,6 +1395,9 @@
 <li><a href="https://elm-chan.org/docs/fat_e.html">FAT文件系统基础</a></li>
 <li><a href="https://elm-chan.org/docs/exfat_e.html">exFAT文件系统基础</a></li>
 <li><a href="https://elm-chan.org/docs/mmc/mmc_e.html">如何使用 MMC/SDC</a></li>
+<li><a href="res/rwtest1.png">性能测试 1</a></li>
+<li><a href="res/rwtest2.html">性能测试 2</a></li>
+<li><a href="res/fd.html">应用演示视频</a></li>
 </ul>
 </li>
 </ul>

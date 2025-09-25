@@ -21,12 +21,20 @@ FatFs 是一个面向小型嵌入式系统的通用 FAT/exFAT 文件系统模块
 
 ### 核心API
 
+![FatFs Layers1](res/layers1.png){ align=right width="250" }
+
 FatFs 提供了一套标准的、类似 `stdio.h` 的文件操作接口。
 
-*   **文件访问**: `f_open`, `f_close`, `f_read`, `f_write`, `f_lseek` 等。
-*   **目录访问**: `f_opendir`, `f_readdir` 等。
-*   **文件管理**: `f_stat`, `f_unlink`, `f_rename`, `f_mkdir` 等。
-*   **卷管理**: `f_mount`, `f_mkfs`, `f_getfree` 等。
+*   **文件访问**: [`f_open`](api/open.md), [`f_close`](api/close.md), [`f_read`](api/read.md), [`f_write`](api/write.md), [`f_lseek`](api/lseek.md) 等。
+*   **目录访问**: [`f_opendir`](api/opendir.md), [`f_readdir`](api/readdir.md) 等。
+*   **文件管理**: [`f_stat`](api/stat.md), [`f_unlink`](api/unlink.md), [`f_rename`](api/rename.md), [`f_mkdir`](api/mkdir.md) 等。
+*   **卷管理**: [`f_mount`](api/mount.md), [`f_mkfs`](api/mkfs.md), [`f_getfree`](api/getfree.md) 等。
+
+### 媒体访问接口
+
+![FatFs Layers2](res/layers2.png){ align=right width="250" }
+
+由于 FatFs 模块是独立于平台和存储介质的*文件系统层*，它与内存卡、硬盘等物理设备完全分离。存储设备控制模块*并非 FatFs 模块的一部分*，需要由开发者自行实现。FatFs 通过如下所示的简单媒体访问接口来控制存储设备。
 
 ### 资源
 
@@ -38,3 +46,6 @@ FatFs 提供了一套标准的、类似 `stdio.h` 的文件操作接口。
     *   [FAT文件系统基础](https://elm-chan.org/docs/fat_e.html)
     *   [exFAT文件系统基础](https://elm-chan.org/docs/exfat_e.html)
     *   [如何使用 MMC/SDC](https://elm-chan.org/docs/mmc/mmc_e.html)
+    *   [性能测试 1](res/rwtest1.png)
+    *   [性能测试 2](res/rwtest2.html)
+    *   [应用演示视频](res/fd.html)
